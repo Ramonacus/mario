@@ -2,12 +2,10 @@ import Timer from "./Timer.js";
 import {loadLevel} from "./loaders.js";
 import {createMario} from "./entities.js";
 import {createCollisionLayer} from "./layers.js";
-import Keyboard from './KeyboardState.js';
+import {setupKeyboard} from "./input.js";
 
 const canvas = document.getElementById('screen');
 const context = canvas.getContext('2d');
-
-
 
 
 Promise.all([
@@ -16,22 +14,13 @@ Promise.all([
 ])
     .then(([mario, level]) => {
 
-        const gravity = 2000;
         mario.pos.set(64, 64);
 
         level.comp.layers.push(createCollisionLayer(level));
 
         level.entities.add(mario);
 
-        const input = new Keyboard();
-        const SPACE = 32;
-        input.addMapping(SPACE, keyState => {
-            if (keyState) {
-                mario.jump.start();
-            } else {
-                mario.jump.cancel();
-            }
-        });
+        const input = setupKeyboard(mario);
         input.listenTo(window);
 
         ['mousedown', 'mousemove'].forEach(eventName => {
@@ -48,7 +37,6 @@ Promise.all([
         timer.update = function update(deltaTime) {
             level.update(deltaTime);
             level.comp.draw(context);
-            mario.vel.y += gravity * deltaTime;
         };
 
         timer.start();
