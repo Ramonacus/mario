@@ -11,18 +11,27 @@ export const Sides = {
 export class Trait {
 	constructor(name) {
 		this.NAME = name;
+		this.tasks = [];
 	}
 
-	update() {}
+	finalize() {
+		this.tasks.forEach(task => task());
+		this.tasks.length = 0;
+	}
+
+	queue(task) {
+		this.tasks.push(task);
+	}
 
 	collides(us, them) {}
 
 	obstruct(entity, side) {}
+
+	update() {}
 }
 
 export default class Entity {
     constructor() {
-    	this.canCollide = true;
         this.pos = new Vec2(0, 0);
         this.vel = new Vec2(0, 0);
         this.size = new Vec2(0, 0);
@@ -44,13 +53,17 @@ export default class Entity {
 		});
 	}
 
-    obstruct(side) {
+    obstruct(side, match) {
     	this.traits.forEach(trait => {
-    		trait.obstruct(this, side);
+    		trait.obstruct(this, side, match);
 		});
 	}
 
 	draw() {}
+
+	finalize() {
+    	this.traits.forEach(trait => trait.finalize());
+	}
 
 	update(deltaTime, level) {
 		this.traits.forEach(trait => {
