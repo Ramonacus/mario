@@ -2,10 +2,11 @@ import Timer from "./Timer.js";
 import Camera from "./Camera.js";
 import {createLevelLoader} from "./loaders/level.js";
 import {setupKeyboard} from "./input.js";
-import {setupMouseControl} from "./debug.js";
 import {loadEntities} from "./entities.js";
 import Entity from "./Entity.js";
 import PlayerController from "./traits/PlayerController.js";
+import {setupMouseControl} from "./debug.js";
+import createCollisionLayer from "./layers/collision.js";
 
 function createPlayerEnv(playerEntity) {
 	const playerEnv = new Entity();
@@ -29,7 +30,8 @@ async function main(canvas) {
 	const input = setupKeyboard(mario);
 	input.listenTo(window);
 
-	setupMouseControl(canvas, mario, camera);
+//	setupMouseControl(canvas, mario, camera);
+//	level.comp.layers.push(createCollisionLayer(level));
 
 	const timer = new Timer(1 / 60);
 

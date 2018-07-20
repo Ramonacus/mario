@@ -1,7 +1,8 @@
 import {Matrix} from "../math.js";
 import Level from "../Level.js";
-import {createBackgroundLayer, createSpriteLayer} from "../layers.js";
+import createSpriteLayer from "../layers/sprite.js";
 import {loadSpriteSheet, loadJSON} from "../loaders.js";
+import createBackgroundLayer from "../layers/background.js";
 
 function setupCollision(levelSpec, level) {
 	const mergedTiles = levelSpec.layers.reduce((mergedTiles, layerSpec) => {
